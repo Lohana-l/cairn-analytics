@@ -1,0 +1,87 @@
+<svg viewBox="0 0 800 648" width="800" height="648" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comment Cairn Analytics fonctionne, style croquis">
+  <title>Comment Cairn fonctionne : quatre étapes</title>
+  <defs>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#E8EAF2"/></pattern>
+    <style>
+      text { font-family:'Segoe UI',-apple-system,'Helvetica Neue',Arial,sans-serif; }
+      .h1 { font-size:24px; font-weight:700; fill:#1A2035; }
+      .h2 { font-size:12.5px; fill:#5C677D; }
+      .num { font-size:16px; font-weight:700; }
+      .st { font-size:14px; font-weight:700; fill:#1A2035; }
+      .sd { font-size:11.5px; fill:#4B5563; }
+      .arrow { fill:none; stroke-width:2; stroke-linecap:round; }
+    </style>
+  </defs>
+
+  <rect width="800" height="648" fill="#FFFFFF"/>
+  <rect width="800" height="648" fill="url(#dots)"/>
+
+  <!-- en-tête -->
+  <rect x="50" y="32" width="345" height="26" rx="6" fill="#FDE68A" opacity="0.55" transform="rotate(-0.8 222 45)"/>
+  <text x="58" y="53" class="h1">Comment Cairn fonctionne</text>
+  <path d="M58 64 q 40 5 80 1 t 80 0 t 70 1" fill="none" stroke="#3D52D5" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/>
+  <text x="58" y="86" class="h2">Détecter quand un modèle de churn décroche, de la donnée à la production</text>
+  <!-- étincelles -->
+  <path d="M716 44 l0 -12 M716 44 l0 12 M716 44 l-9 0 M716 44 l9 0" stroke="#8B9AE8" stroke-width="2" stroke-linecap="round"/>
+  <path d="M748 70 l0 -7 M748 70 l0 7 M748 70 l-5 0 M748 70 l5 0" stroke="#F5C99B" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- étape 1 (gauche) -->
+  <g transform="rotate(-1 260 165)">
+    <rect x="60" y="115" width="400" height="100" rx="14" fill="#EEF1FD" stroke="#8B9AE8" stroke-width="1.8"/>
+    <rect x="64" y="119" width="400" height="100" rx="14" fill="none" stroke="#8B9AE8" stroke-width="1" opacity="0.3"/>
+    <text x="106" y="148" class="st">Ingérer les données SaaS</text>
+    <text x="106" y="172" class="sd">Comptes, abonnements et usage simulés, chargés dans</text>
+    <text x="106" y="190" class="sd">Postgres et rechargeables à volonté, sans créer de doublon.</text>
+  </g>
+  <circle cx="66" cy="122" r="17" fill="#FFFFFF" stroke="#3D52D5" stroke-width="2"/>
+  <ellipse cx="66" cy="122" rx="18.5" ry="16" fill="none" stroke="#3D52D5" stroke-width="1" opacity="0.4" transform="rotate(-8 66 122)"/>
+  <text x="66" y="128" class="num" fill="#3D52D5" text-anchor="middle">1</text>
+
+  <!-- flèche 1 -->
+  <path d="M470 222 C 520 240, 560 228, 590 246" class="arrow" stroke="#8B9AE8"/>
+  <path d="M590 246 L577 243 M590 246 L583 235" class="arrow" stroke="#8B9AE8"/>
+
+  <!-- étape 2 (droite) -->
+  <g transform="rotate(0.8 540 305)">
+    <rect x="340" y="255" width="400" height="100" rx="14" fill="#EFFBF5" stroke="#7BCFA4" stroke-width="1.8"/>
+    <rect x="336" y="259" width="400" height="100" rx="14" fill="none" stroke="#7BCFA4" stroke-width="1" opacity="0.3"/>
+    <text x="386" y="288" class="st">Valider la donnée d'abord</text>
+    <text x="386" y="312" class="sd">Great Expectations contrôle chaque table brute, puis dbt</text>
+    <text x="386" y="330" class="sd">en construit un schéma en étoile, testé (64 tests).</text>
+  </g>
+  <circle cx="346" cy="262" r="17" fill="#FFFFFF" stroke="#047857" stroke-width="2"/>
+  <ellipse cx="346" cy="262" rx="18.5" ry="16" fill="none" stroke="#047857" stroke-width="1" opacity="0.4" transform="rotate(7 346 262)"/>
+  <text x="346" y="268" class="num" fill="#047857" text-anchor="middle">2</text>
+
+  <!-- flèche 2 -->
+  <path d="M330 362 C 280 380, 240 368, 210 386" class="arrow" stroke="#7BCFA4"/>
+  <path d="M210 386 L223 383 M210 386 L217 375" class="arrow" stroke="#7BCFA4"/>
+
+  <!-- étape 3 (gauche) -->
+  <g transform="rotate(-0.7 260 445)">
+    <rect x="60" y="395" width="400" height="100" rx="14" fill="#F8F5FF" stroke="#B79AED" stroke-width="1.8"/>
+    <rect x="64" y="399" width="400" height="100" rx="14" fill="none" stroke="#B79AED" stroke-width="1" opacity="0.3"/>
+    <text x="106" y="428" class="st">Entraîner &amp; expliquer</text>
+    <text x="106" y="452" class="sd">XGBoost face à un modèle de référence : le meilleur est</text>
+    <text x="106" y="470" class="sd">promu (suivi MLflow), et SHAP explique chaque prédiction.</text>
+  </g>
+  <circle cx="66" cy="402" r="17" fill="#FFFFFF" stroke="#6D28D9" stroke-width="2"/>
+  <ellipse cx="66" cy="402" rx="18.5" ry="16" fill="none" stroke="#6D28D9" stroke-width="1" opacity="0.4" transform="rotate(-6 66 402)"/>
+  <text x="66" y="408" class="num" fill="#6D28D9" text-anchor="middle">3</text>
+
+  <!-- flèche 3 -->
+  <path d="M470 502 C 520 520, 560 508, 590 526" class="arrow" stroke="#B79AED"/>
+  <path d="M590 526 L577 523 M590 526 L583 515" class="arrow" stroke="#B79AED"/>
+
+  <!-- étape 4 (droite) -->
+  <g transform="rotate(0.9 540 585)">
+    <rect x="340" y="535" width="400" height="100" rx="14" fill="#F0F9FF" stroke="#7BC4E8" stroke-width="1.8"/>
+    <rect x="336" y="539" width="400" height="100" rx="14" fill="none" stroke="#7BC4E8" stroke-width="1" opacity="0.3"/>
+    <text x="386" y="568" class="st">Surveiller en production</text>
+    <text x="386" y="592" class="sd">Streamlit suit la dérive des données (drift), la qualité et</text>
+    <text x="386" y="610" class="sd">les indicateurs du modèle ; FastAPI sert les prédictions.</text>
+  </g>
+  <circle cx="346" cy="542" r="17" fill="#FFFFFF" stroke="#0369A1" stroke-width="2"/>
+  <ellipse cx="346" cy="542" rx="18.5" ry="16" fill="none" stroke="#0369A1" stroke-width="1" opacity="0.4" transform="rotate(8 346 542)"/>
+  <text x="346" y="548" class="num" fill="#0369A1" text-anchor="middle">4</text>
+</svg>

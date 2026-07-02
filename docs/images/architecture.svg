@@ -1,0 +1,123 @@
+<svg viewBox="0 0 1200 630" width="1200" height="630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cairn Analytics architecture diagram">
+  <title>Cairn Analytics: churn DataOps platform architecture</title>
+  <defs>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#E8EAF2"/></pattern>
+    <marker id="chG" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M2 1.5 L8 5 L2 8.5" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <style>
+      text { font-family:'Segoe UI',-apple-system,'Helvetica Neue',Arial,sans-serif; }
+      .h1 { font-size:25px; font-weight:700; fill:#1A2035; }
+      .h2 { font-size:13px; fill:#5C677D; }
+      .lab { font-size:10.5px; font-weight:600; letter-spacing:1.5px; }
+      .bt { font-size:13px; font-weight:700; fill:#1A2035; }
+      .bl { font-size:11.5px; fill:#4B5563; }
+      .sm { font-size:10.5px; fill:#8A94A6; }
+      .mono { }
+      .flow { stroke:#94A3B8; stroke-width:1.8; fill:none; }
+      .dot { stroke:#D97706; stroke-width:1.8; fill:none; stroke-dasharray:1.5 6; stroke-linecap:round; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="630" fill="#FFFFFF"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+
+  <!-- header -->
+  <rect x="48" y="36" width="240" height="26" rx="6" fill="#FDE68A" opacity="0.55" transform="rotate(-0.6 168 49)"/>
+  <text x="56" y="57" class="h1">Cairn Analytics</text>
+  <text x="310" y="57" class="h2">: a DataOps platform for churn prediction</text>
+  <text x="56" y="82" class="h2">Catch drift and quality regressions before they degrade the model in production</text>
+
+  <!-- stage labels -->
+  <text x="135" y="122" class="lab" text-anchor="middle" fill="#8A94A6">SOURCES</text>
+  <text x="350" y="122" class="lab" text-anchor="middle" fill="#0284C7">INGESTION</text>
+  <text x="585" y="122" class="lab" text-anchor="middle" fill="#3D52D5">WAREHOUSE, DBT</text>
+  <text x="835" y="122" class="lab" text-anchor="middle" fill="#7C3AED">MACHINE LEARNING</text>
+  <text x="1065" y="122" class="lab" text-anchor="middle" fill="#059669">SERVING</text>
+
+  <!-- 1 sources -->
+  <rect x="50" y="132" width="170" height="190" rx="12" fill="#F8F9FB" stroke="#D6DAE3" stroke-width="1.5"/>
+  <text x="66" y="160" class="bt">SaaS data</text>
+  <text x="66" y="186" class="bl">synthetic, realistic</text>
+  <text x="66" y="204" class="bl">accounts, plans</text>
+  <text x="66" y="222" class="bl">subscriptions, invoices</text>
+  <text x="66" y="240" class="bl">product events</text>
+  <rect x="66" y="274" width="120" height="26" rx="13" fill="#FFFFFF" stroke="#C9CFDB"/>
+  <text x="126" y="291" class="sm" text-anchor="middle">seed generator</text>
+
+  <!-- 2 ingestion -->
+  <rect x="265" y="132" width="170" height="190" rx="12" fill="#F0F9FF" stroke="#A8D8F0" stroke-width="1.5"/>
+  <text x="281" y="160" class="bt">Python ingestion</text>
+  <text x="281" y="186" class="bl">COPY → TEMP table</text>
+  <text x="281" y="204" class="bl">full refresh on key</text>
+  <text x="281" y="222" class="bl">purge stale rows + upsert</text>
+  <text x="281" y="240" class="bl">idempotent re-runs</text>
+  <rect x="281" y="274" width="120" height="26" rx="13" fill="#FFFFFF" stroke="#A8D8F0"/>
+  <text x="341" y="291" class="sm mono" text-anchor="middle" fill="#0369A1">make up</text>
+
+  <!-- 3 warehouse -->
+  <rect x="480" y="132" width="210" height="190" rx="12" fill="#EEF1FD" stroke="#B6C0F0" stroke-width="1.5"/>
+  <text x="496" y="158" class="bt">PostgreSQL 16</text>
+  <text x="496" y="174" class="sm">one warehouse, 4 schemas</text>
+  <rect x="496" y="184" width="178" height="24" rx="7" fill="#FFFFFF" stroke="#D6DCF8"/>
+  <text x="585" y="200" class="bl mono" text-anchor="middle">raw</text>
+  <rect x="496" y="212" width="178" height="24" rx="7" fill="#FFFFFF" stroke="#B6C0F0"/>
+  <text x="585" y="228" class="bl mono" text-anchor="middle">staging</text>
+  <rect x="496" y="240" width="178" height="24" rx="7" fill="#FFFFFF" stroke="#8B9AE8"/>
+  <text x="585" y="256" class="bl mono" text-anchor="middle">marts: star schema</text>
+  <rect x="496" y="268" width="178" height="24" rx="7" fill="#FFFFFF" stroke="#3D52D5"/>
+  <text x="585" y="284" class="bl mono" text-anchor="middle">analytics</text>
+  <text x="585" y="310" class="sm" text-anchor="middle">dbt 1.9, 18 models, 64 tests</text>
+
+  <!-- 4 ML -->
+  <rect x="735" y="132" width="200" height="190" rx="12" fill="#F8F5FF" stroke="#D5C8F5" stroke-width="1.5"/>
+  <text x="751" y="160" class="bt">Churn ML</text>
+  <text x="751" y="186" class="bl">calibrated LogReg baseline</text>
+  <text x="751" y="204" class="bl">vs XGBoost challenger</text>
+  <text x="751" y="222" class="bl">promotion gate: PR-AUC</text>
+  <text x="751" y="240" class="bl">SHAP: risk drivers per account</text>
+  <rect x="751" y="274" width="168" height="26" rx="13" fill="#FFFFFF" stroke="#D5C8F5"/>
+  <text x="835" y="291" class="sm" text-anchor="middle" fill="#6D28D9">MLflow tracking + registry</text>
+
+  <!-- 5 serving -->
+  <rect x="980" y="132" width="170" height="88" rx="12" fill="#EFFBF5" stroke="#A7E3C6" stroke-width="1.5"/>
+  <text x="996" y="158" class="bt">FastAPI</text>
+  <text x="996" y="182" class="bl">/predict/churn, /batch</text>
+  <text x="996" y="200" class="sm">Pydantic v2, ≤ 5k accounts</text>
+  <rect x="980" y="234" width="170" height="88" rx="12" fill="#EFFBF5" stroke="#A7E3C6" stroke-width="1.5"/>
+  <text x="996" y="260" class="bt">Streamlit console</text>
+  <text x="996" y="284" class="bl">drift, quality, KPIs</text>
+  <text x="996" y="302" class="sm">unified DataOps cockpit</text>
+
+  <!-- flow arrows -->
+  <path d="M222 227 C 236 222, 248 222, 261 227" class="flow" marker-end="url(#chG)"/>
+  <path d="M437 227 C 451 222, 463 222, 476 227" class="flow" marker-end="url(#chG)"/>
+  <path d="M692 227 C 706 222, 718 222, 731 227" class="flow" marker-end="url(#chG)"/>
+  <path d="M937 200 C 952 192, 962 184, 976 178" class="flow" marker-end="url(#chG)"/>
+  <path d="M937 254 C 952 262, 962 270, 976 276" class="flow" marker-end="url(#chG)"/>
+
+  <!-- Prefect band -->
+  <path d="M350 324 L350 366" class="dot"/>
+  <path d="M585 324 L585 366" class="dot"/>
+  <path d="M835 324 L835 366" class="dot"/>
+  <rect x="50" y="370" width="1100" height="58" rx="12" fill="#FFFBEB" stroke="#F5D88C" stroke-width="1.5"/>
+  <text x="70" y="394" class="bt" fill="#B45309">Prefect 3: orchestration</text>
+  <text x="70" y="412" class="sm">retries, built-in worker, one container</text>
+  <text x="370" y="394" class="bl mono">daily_refresh: seed → ingest → dbt → validate → train → predict</text>
+  <text x="370" y="412" class="bl mono">intraday_predict: re-score → Evidently drift, no retrain</text>
+
+  <!-- bottom row -->
+  <rect x="50" y="458" width="350" height="78" rx="12" fill="#EFFBF5" stroke="#A7E3C6" stroke-width="1.5"/>
+  <text x="70" y="482" class="bt" fill="#047857">Quality guardrails</text>
+  <text x="70" y="502" class="bl">Great Expectations: 5 suites, ~25 checks</text>
+  <text x="70" y="519" class="bl">Evidently: data &amp; target drift, perf reports</text>
+
+  <rect x="425" y="458" width="350" height="78" rx="12" fill="#FFF6ED" stroke="#F5C99B" stroke-width="1.5"/>
+  <text x="445" y="482" class="bt" fill="#C2580C">Observability</text>
+  <text x="445" y="502" class="bl">Prometheus /metrics, Loki + Promtail logs</text>
+  <text x="445" y="519" class="bl">Grafana: API SLO and pipeline dashboards</text>
+
+  <rect x="800" y="458" width="350" height="78" rx="12" fill="#F8F9FB" stroke="#D6DAE3" stroke-width="1.5"/>
+  <text x="820" y="482" class="bt" fill="#475569">Run &amp; CI</text>
+  <text x="820" y="502" class="bl">100% local via Docker Compose (no cloud)</text>
+  <text x="820" y="519" class="bl">GitHub Actions CI: lint, tests, image builds</text>
+
+</svg>
