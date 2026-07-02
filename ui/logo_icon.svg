@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <g transform="translate(24,24)">
+    <circle cx="0" cy="0" r="19" fill="none" stroke="#7C3AED"
+            stroke-width="3" stroke-linecap="round"
+            stroke-dasharray="80 42" transform="rotate(-90)"/>
+    <circle cx="0" cy="0" r="11" fill="none" stroke="#7C3AED"
+            stroke-width="1.8" opacity="0.55"/>
+    <circle cx="0" cy="0" r="4.8" fill="#0EA5E9"/>
+    <circle cx="0" cy="0" r="2" fill="#FFFFFF" opacity="0.9"/>
+  </g>
+</svg>

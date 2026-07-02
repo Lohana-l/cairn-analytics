@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 48" width="220" height="48">
+  <!-- Logogramme : anneau de scan violet + point lumineux ciel -->
+  <g transform="translate(24,24)">
+    <circle cx="0" cy="0" r="17" fill="none" stroke="#7C3AED"
+            stroke-width="2.4" stroke-linecap="round"
+            stroke-dasharray="72 38" transform="rotate(-90)"/>
+    <circle cx="0" cy="0" r="10" fill="none" stroke="#7C3AED"
+            stroke-width="1.6" opacity="0.55"/>
+    <circle cx="0" cy="0" r="4.2" fill="#0EA5E9"/>
+    <circle cx="0" cy="0" r="1.8" fill="#FFFFFF" opacity="0.9"/>
+  </g>
+
+  <!-- Nom de l'app : Cairn -->
+  <text x="54" y="24"
+        font-family="Inter, system-ui, -apple-system, sans-serif"
+        font-size="22" font-weight="800"
+        fill="#5B21B6" letter-spacing="-0.5">Cairn</text>
+
+  <!-- Sous-titre : Churn Intelligence -->
+  <text x="54" y="40"
+        font-family="Inter, system-ui, -apple-system, sans-serif"
+        font-size="9" font-weight="700"
+        fill="#64748B" letter-spacing="1.6">CHURN INTELLIGENCE</text>
+</svg>

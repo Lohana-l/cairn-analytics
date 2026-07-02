@@ -1,0 +1,14 @@
+# Data
+numpy==1.26.4
+pandas==2.2.1
+
+# PostgreSQL
+psycopg2-binary==2.9.9
+
+# Sources REST live (Prometheus, MLflow, Prefect) interrogées par data/loader.py.
+# Déclaré explicitement : ne pas compter sur la dépendance transitive de streamlit.
+requests==2.31.0
+
+# Dashboard
+streamlit==1.40.2
+plotly==5.24.1
