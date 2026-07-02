@@ -1,0 +1,45 @@
+# Loki : mode single-binary, stockage filesystem, rétention 7 jours.
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9096
+  log_level: warn
+
+common:
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore: { store: inmemory }
+  replication_factor: 1
+  path_prefix: /tmp/loki
+
+schema_config:
+  configs:
+    - from: 2024-01-01
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index: { prefix: index_, period: 24h }
+
+storage_config:
+  tsdb_shipper:
+    active_index_directory: /tmp/loki/index
+    cache_location:         /tmp/loki/cache
+  filesystem:
+    directory: /tmp/loki/chunks
+
+limits_config:
+  retention_period: 168h          # 7 jours
+  reject_old_samples: true
+  reject_old_samples_max_age: 24h
+  ingestion_rate_mb: 8
+
+compactor:
+  working_directory: /tmp/loki/compactor
+  delete_request_store: filesystem
+  retention_enabled: true
+
+ruler:
+  storage:
+    type: local
+    local: { directory: /tmp/loki/rules }

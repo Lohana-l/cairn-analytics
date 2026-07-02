@@ -1,0 +1,31 @@
+# Prometheus : configuration de scrape de la plateforme Cairn.
+#
+# Cibles scrapées :
+#   - FastAPI /metrics      : latence requêtes, débit, taux d'erreur
+#   - Postgres exporter     : connexions DB, débit requêtes, lag réplication (si ajouté)
+#   - Self                  : santé de Prometheus lui-même
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+  external_labels:
+    platform: cairn
+    env:      local
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: cairn-api
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["api:8000"]
+        labels:
+          service: churn-api
+          tier:    serving
+
+  # Décommenter lors de l'ajout du postgres_exporter :
+  # - job_name: postgres
+  #   static_configs:
+  #     - targets: ["postgres-exporter:9187"]
+  #       labels: { service: postgres, tier: data }

@@ -1,0 +1,113 @@
+{
+  "title": "Cairn - Pipeline & Data Quality",
+  "uid": "cairn-pipeline-health",
+  "tags": ["cairn", "pipeline", "data-quality"],
+  "schemaVersion": 39,
+  "version": 1,
+  "timezone": "browser",
+  "time": { "from": "now-7d", "to": "now" },
+  "refresh": "1m",
+  "editable": false,
+  "panels": [
+    {
+      "id": 1, "type": "stat", "title": "Accounts scored (latest)",
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 4 },
+      "datasource": { "type": "postgres", "uid": "pg-cairn" },
+      "targets": [{
+        "refId": "A", "format": "table",
+        "rawSql": "SELECT count(*) AS value FROM analytics.churn_predictions WHERE predicted_at = (SELECT max(predicted_at) FROM analytics.churn_predictions);"
+      }],
+      "fieldConfig": { "defaults": { "unit": "short", "decimals": 0 } }
+    },
+    {
+      "id": 2, "type": "stat", "title": "Critical churn risk",
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 4 },
+      "datasource": { "type": "postgres", "uid": "pg-cairn" },
+      "targets": [{
+        "refId": "A", "format": "table",
+        "rawSql": "SELECT count(*) AS value FROM analytics.churn_predictions WHERE churn_risk_tier = 'critical' AND predicted_at = (SELECT max(predicted_at) FROM analytics.churn_predictions);"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short", "decimals": 0,
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "green", "value": null },
+            { "color": "orange", "value": 5 },
+            { "color": "red", "value": 15 }
+          ]}
+        }
+      },
+      "options": { "colorMode": "background" }
+    },
+    {
+      "id": 3, "type": "stat", "title": "Last MRR snapshot",
+      "gridPos": { "x": 12, "y": 0, "w": 6, "h": 4 },
+      "datasource": { "type": "postgres", "uid": "pg-cairn" },
+      "targets": [{
+        "refId": "A", "format": "table",
+        "rawSql": "SELECT sum(mrr) AS value FROM marts.fct_mrr_monthly WHERE month_start = (SELECT max(month_start) FROM marts.fct_mrr_monthly);"
+      }],
+      "fieldConfig": { "defaults": { "unit": "currencyUSD", "decimals": 0 } }
+    },
+    {
+      "id": 4, "type": "stat", "title": "Logo churn rate (latest month)",
+      "gridPos": { "x": 18, "y": 0, "w": 6, "h": 4 },
+      "datasource": { "type": "postgres", "uid": "pg-cairn" },
+      "targets": [{
+        "refId": "A", "format": "table",
+        "rawSql": "WITH m AS (SELECT month_start, count(distinct account_id) FILTER (WHERE movement_type='churn') AS churned, count(distinct account_id) FILTER (WHERE movement_type IN ('new','expansion','steady','contraction')) AS active FROM marts.fct_mrr_movements GROUP BY 1) SELECT (churned::float / nullif(lag(active) OVER (ORDER BY month_start),0)) AS value FROM m ORDER BY month_start DESC LIMIT 1;"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit", "decimals": 2,
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "green", "value": null },
+            { "color": "orange", "value": 0.03 },
+            { "color": "red", "value": 0.05 }
+          ]}
+        }
+      },
+      "options": { "colorMode": "background" }
+    },
+    {
+      "id": 5, "type": "timeseries", "title": "MRR trend (last 12 months)",
+      "gridPos": { "x": 0, "y": 4, "w": 12, "h": 9 },
+      "datasource": { "type": "postgres", "uid": "pg-cairn" },
+      "targets": [{
+        "refId": "A", "format": "time_series",
+        "rawSql": "SELECT month_start AS time, sum(mrr) AS \"MRR\" FROM marts.fct_mrr_monthly WHERE month_start >= now() - interval '12 months' GROUP BY 1 ORDER BY 1;"
+      }],
+      "fieldConfig": { "defaults": { "unit": "currencyUSD" } }
+    },
+    {
+      "id": 6, "type": "barchart", "title": "MRR movements (delta) - last 6 months",
+      "gridPos": { "x": 12, "y": 4, "w": 12, "h": 9 },
+      "datasource": { "type": "postgres", "uid": "pg-cairn" },
+      "targets": [{
+        "refId": "A", "format": "time_series",
+        "rawSql": "SELECT month_start AS time, sum(delta_mrr) FILTER (WHERE movement_type='new') AS \"new\", sum(delta_mrr) FILTER (WHERE movement_type='expansion') AS \"expansion\", sum(delta_mrr) FILTER (WHERE movement_type='contraction') AS \"contraction\", sum(delta_mrr) FILTER (WHERE movement_type='churn') AS \"churn\" FROM marts.fct_mrr_movements WHERE month_start >= now() - interval '6 months' GROUP BY 1 ORDER BY 1;"
+      }],
+      "fieldConfig": { "defaults": { "unit": "currencyUSD" } }
+    },
+    {
+      "id": 7, "type": "piechart", "title": "Account health distribution",
+      "gridPos": { "x": 0, "y": 13, "w": 12, "h": 9 },
+      "datasource": { "type": "postgres", "uid": "pg-cairn" },
+      "targets": [{
+        "refId": "A", "format": "table",
+        "rawSql": "SELECT CASE WHEN is_churned THEN 'dormant' WHEN rule_based_health_score >= 70 THEN 'champion' WHEN rule_based_health_score >= 50 THEN 'healthy' WHEN rule_based_health_score >= 30 THEN 'at_risk' ELSE 'dormant' END AS tier, count(*) AS accounts FROM marts.mart_account_health GROUP BY 1;"
+      }],
+      "options": { "legend": { "displayMode": "table", "placement": "right", "values": ["value", "percent"] } }
+    },
+    {
+      "id": 8, "type": "logs", "title": "Pipeline logs (Loki)",
+      "gridPos": { "x": 12, "y": 13, "w": 12, "h": 9 },
+      "datasource": { "type": "loki", "uid": "loki" },
+      "targets": [{
+        "refId": "A",
+        "expr": "{container=~\"cairn_(pipeline|prefect|dbt)\"}"
+      }],
+      "options": { "showTime": true, "wrapLogMessage": true }
+    }
+  ]
+}

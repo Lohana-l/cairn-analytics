@@ -1,0 +1,36 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    uid:  prom
+    url:  http://prometheus:9090
+    access: proxy
+    isDefault: true
+    editable: false
+    jsonData:
+      timeInterval: "15s"
+
+  - name: Loki
+    type: loki
+    uid:  loki
+    url:  http://loki:3100
+    access: proxy
+    editable: false
+
+  - name: Cairn Postgres
+    type: postgres
+    uid:  pg-cairn
+    url:  postgres:5432
+    user: cairn
+    secureJsonData:
+      # Interpolé par Grafana depuis l'environnement du conteneur
+      # (POSTGRES_PASSWORD est injecté via docker-compose) : pas de mot de
+      # passe en clair dans un fichier versionné.
+      password: ${POSTGRES_PASSWORD}
+    jsonData:
+      database: cairn
+      sslmode: disable
+      postgresVersion: 1600
+      maxOpenConns: 5
+    editable: false
